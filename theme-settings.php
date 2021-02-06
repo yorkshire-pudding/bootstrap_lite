@@ -136,6 +136,18 @@ function bootstrap_lite_form_system_theme_settings_alter(&$form, &$form_state, $
     '#empty_value' => NULL,
   );
 
+  $form['bootstrap_lite_cdn']['bootstrap_lite_bootswatch'] = array(
+    '#type' => 'select',
+    '#title' => t('Bootswatch version'),
+    '#options' => backdrop_map_assoc(array(
+      '3.3.5',
+      '4.5.2'
+    )),
+    '#default_value' => theme_get_setting('bootstrap_lite_cdn', 'bootstrap_lite'),
+    '#empty_option' => t('Disabled'),
+    '#empty_value' => NULL,
+  );
+
   $form['bootstrap_lite_cdn']['bootstrap_lite_font_awesome'] = array(
     '#type' => 'select',
     '#title' => t('Font Awesome version'),
@@ -156,7 +168,7 @@ function bootstrap_lite_form_system_theme_settings_alter(&$form, &$form_state, $
   );
 
   $bootswatch_themes[''] = bootstrap_bootswatch_template($default_theme_details);
-  $request = backdrop_http_request('https://bootswatch.com/api/4.json');
+  $request = backdrop_http_request('https://bootswatch.com/api/3.json');
   if ($request && $request->code === '200' && !empty($request->data)) {
     if (($api = backdrop_json_decode($request->data)) && is_array($api) && !empty($api['themes'])) {
       foreach ($api['themes'] as $bootswatch_theme) {
